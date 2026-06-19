@@ -1,0 +1,35 @@
+name: Deploy - Build & Release JAR
+
+# Läuft nur bei Push/Merge auf main → baut die .jar und lädt sie als Release hoch.
+on:
+  push:
+    branches:
+      - main
+
+# Erlaubt dem Workflow, ein Release zu erstellen.
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 26
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '26'
+          cache: maven
+
+      - name: Build JAR (with tests and checkstyle)
+        run: mvn -B verify
+
+      - name: Upload JAR as GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: target/*.jar
