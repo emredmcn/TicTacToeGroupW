@@ -1,0 +1,32 @@
+name: CI - Tests & Checkstyle
+
+# Läuft bei Push auf Feature-Branches und bei Pull Requests gegen main.
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Verhindert doppelte/veraltete Läufe auf demselben Branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 26
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '26'
+          cache: maven
+
+      - name: Run tests and checkstyle
+        run: mvn -B verify
