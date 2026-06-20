@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
@@ -39,5 +42,32 @@ class BoardTest {
     void placeOutOfBoundsThrows() {
         Board board = new Board();
         assertThrows(IllegalArgumentException.class, () -> board.place(3, 0, 'X'));
+    }
+
+    @Test
+    void printShowsEmptyBoard() {
+        Board board = new Board();
+        String output = capturePrint(board);
+        assertTrue(output.contains("| | | |"));
+    }
+
+    @Test
+    void printShowsPlacedMarker() {
+        Board board = new Board();
+        board.place(1, 1, 'X');
+        String output = capturePrint(board);
+        assertTrue(output.contains("X"));
+    }
+
+    private String capturePrint(Board board) {
+        PrintStream original = System.out;
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(buffer));
+        try {
+            board.print();
+        } finally {
+            System.setOut(original);
+        }
+        return buffer.toString();
     }
 }
