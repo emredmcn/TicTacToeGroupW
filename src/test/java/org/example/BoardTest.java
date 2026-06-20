@@ -109,6 +109,26 @@ class BoardTest {
         assertTrue(board.hasWinner());
     }
 
+    @Test
+    void clearEmptiesPlacedCell() {
+        Board board = new Board();
+        board.place(0, 0, 'X');
+        board.clear();
+        assertTrue(board.isCellEmpty(0, 0));
+    }
+
+    @Test
+    void clearedBoardIsNotFull() {
+        Board board = new Board();
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                board.place(x, y, 'X');
+            }
+        }
+        board.clear();
+        assertFalse(board.isFull());
+    }
+
     private String capturePrint(Board board) {
         PrintStream original = System.out;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
