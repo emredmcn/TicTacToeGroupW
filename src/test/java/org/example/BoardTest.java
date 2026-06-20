@@ -59,6 +59,56 @@ class BoardTest {
         assertTrue(output.contains("X"));
     }
 
+    @Test
+    void emptyBoardIsNotFull() {
+        Board board = new Board();
+        assertFalse(board.isFull());
+    }
+
+    @Test
+    void fullBoardIsFull() {
+        Board board = new Board();
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                board.place(x, y, 'X');
+            }
+        }
+        assertTrue(board.isFull());
+    }
+
+    @Test
+    void noWinnerOnEmptyBoard() {
+        Board board = new Board();
+        assertFalse(board.hasWinner());
+    }
+
+    @Test
+    void detectsRowWin() {
+        Board board = new Board();
+        board.place(0, 0, 'X');
+        board.place(0, 1, 'X');
+        board.place(0, 2, 'X');
+        assertTrue(board.hasWinner());
+    }
+
+    @Test
+    void detectsColumnWin() {
+        Board board = new Board();
+        board.place(0, 0, 'O');
+        board.place(1, 0, 'O');
+        board.place(2, 0, 'O');
+        assertTrue(board.hasWinner());
+    }
+
+    @Test
+    void detectsDiagonalWin() {
+        Board board = new Board();
+        board.place(0, 0, 'X');
+        board.place(1, 1, 'X');
+        board.place(2, 2, 'X');
+        assertTrue(board.hasWinner());
+    }
+
     private String capturePrint(Board board) {
         PrintStream original = System.out;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
