@@ -27,6 +27,17 @@ public class Board {
         cells[x][y] = marker;
     }
 
+    public void print() {
+        for (int row = 0; row < SIZE; row++) {
+            StringBuilder line = new StringBuilder();
+            for (int col = 0; col < SIZE; col++) {
+                line.append('|').append(cells[row][col]);
+            }
+            line.append('|');
+            System.out.println(line);
+        }
+    }
+
     private void checkBounds(int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             throw new IllegalArgumentException("Coordinates out of range.");
