@@ -7,6 +7,10 @@ public class Board {
 
     public Board() {
         cells = new char[SIZE][SIZE];
+        clear();
+    }
+
+    public void clear() {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 cells[row][col] = EMPTY;
